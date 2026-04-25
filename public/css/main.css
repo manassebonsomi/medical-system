@@ -1,0 +1,558 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+body{
+  background-color: #000;
+}
+
+/* -------------------------Classes utilitaires ---------------*/
+#username{
+  display: none;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+/* le style none */
+.ul-li, .listStyleNone{
+  list-style: none;
+}
+/* les textes en couleur*/
+.txtwhite{
+  color: #fff;
+}
+.txtbleu{
+  color: dodgerblue;
+}
+.txtgray{
+ color: #aeadad;
+}
+.txtblack{
+  color: black;
+}
+/* images des icones des reseaux ou autres */
+.img-compte{
+  height: 20px;
+  width: 27px;
+  padding-right:0.4em;
+}
+/* les textes decoration */
+.text-dec-none a{
+  text-decoration: none;
+}
+/* LES ICONES D'ENTETES DES PAGES DE CONNEXION */
+.icone-quitter{
+  height: 50px;
+  width: 50px;
+  background-color: #fff;
+  border-radius: 25px;
+}
+.iconX-header{
+  height: 130px;
+  width: 130px;
+}
+/* ---------------------PAGE INDEX-------------------------- */
+
+/* PARTIE MAIN */
+.index_main{
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10em;
+  padding-right: 20em;
+  background-color: #000;
+  height: 100vh;
+}
+/* Insertion icone X partie gauche  */
+.iconeX{
+  height: 600px;
+  width: 600px;
+  border-radius: 20px;
+}
+/* partie droite connexion */
+.contenair_index_main{
+  margin-top: 100px;
+  width: 30%;
+  gap: 35px;
+}
+/* conteneur contenant le titre comment ça marche */
+.contenair_index_main_div1{
+  color: #fff;
+  font-size: 50px;
+  font-weight: bold;
+  text-align: start;
+}
+.big-C{
+  font-size: 95px;
+  display: inline-block;
+}
+/* partie inscription  */
+.contenair_index_main_div2{
+  gap: 30px;
+}
+.ul_index{
+  gap: 15px;
+}
+.ul_index-li{
+  text-align: center;
+  background-color: #fff;
+  border: 7px solid transparent;
+  border-radius: 20px;
+  width: 90%;
+}
+.iconR{
+  justify-content: center;
+}
+.OU{
+  align-items: center;
+  gap: 8px;
+  width: 90%;
+}
+.OU hr{
+  flex: 1;
+  border: none;
+  border-top: 2px solid #aeadad;
+}
+.Creer_compte{
+  font-weight: 700;
+  background-color: dodgerblue;
+  padding: 0.3em 0;
+}
+/* déjà un compte(connexion)  */
+.connecter{
+  background-color: transparent;
+  border: 2px solid rgb(174, 211, 248);
+  padding: 0.6em 0;
+}
+.connexion{
+  font-weight: 700;
+}
+.contenair_index_main_div3{
+  gap: 15px;
+  padding-bottom: 3em;
+}
+/* PARTIE FOOTER POUR INDEX */
+.footer_index{
+  background-color: #000;
+}
+.index_footer_ul{
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  color:#aeadad ;
+  padding-bottom: 3em;
+  margin-top: 100px;
+}
+.index_footer_ul li a{
+  color:#aeadad ;
+}
+/* --------------------------PAGE COMPTE --------------------*/
+/* header */
+.header_compte{
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  background-color: #000;
+}
+.nav-compte{
+  width: 60%;
+  justify-content: space-between;
+}
+.icone-X-entete{
+  width: 50%;
+  padding-top: 1em;
+  padding-left: 2em;
+}
+.icX{
+  width: 22%;
+  justify-content: start;
+}
+
+/* Partie main compte */
+.main-compte{
+  background-color: #000;
+  height: 100vh;
+  align-items: center;
+}
+.formulaire-compte{
+  padding-top: 10em;
+  width: 60%;
+  height: 100%;
+}
+/* premier formulaire */
+.first-formulaire{
+  gap: 20px;
+}
+/* insertion des données */
+.conteneur-données{
+  gap: 50px;
+}
+.conteneur-données h1{
+  color: #fff;
+  font-size: 63px;
+  font-weight: bolder;
+}
+.save{
+  gap: 20px;
+}
+.save input{
+  color: #fff;
+  border-radius: 5px;
+  border: 2px solid #aeadad;
+  padding: 1em;
+  font-size: 19px;
+  background-color: #000;
+}
+/* Utilisez email?  */
+.conteneur-email{
+  justify-content: end;
+}
+.conteneur-email a{
+  text-decoration: none;
+  font-size: 20px;
+  color: dodgerblue;
+}
+/* second formulaire */
+.born{
+  margin-top: 1.5em;
+  gap: 20px;
+  width: auto;
+}
+.born h2{
+  color: #fff;
+}
+.born div p{
+  font-size: 19px;
+  color: #aeadad;
+}
+
+.date_born{
+  gap: 20px;
+}
+.date_born select{
+  color: #aeadad;
+  border: 2px solid #aeadad;
+  border-radius: 5px;
+  padding-bottom: 2em;
+  padding-left: 1em;
+}
+.optiongroupe{
+  color: #fff;
+}
+#regMois{
+  background-color: #000;
+  width: 50%;
+  height: 100px;
+  font-size: 20px;
+}
+#regJour{
+  background-color: #000;
+  width: 25%;
+  font-size: 20px;
+}
+#regAnnee{
+  background-color: #000;
+  width: 35%;
+  font-size: 20px;
+}
+
+/* FOOTER COMPTE */
+.footer-compte{
+  background-color: #000;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+}
+.conteneur-footer{
+  width: 60%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-next {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  border: 10px solid transparent;
+  border-radius: 20px;
+  background: color white;;
+  margin-top: 100px;
+  cursor:pointer;
+  font-size: 30px;
+}
+
+.conteneur-suivant button{
+  font-size: 25px;
+  text-decoration: none;
+  font-weight: bolder;
+  color: #000;
+}
+/* ------------------PAGE ONE CONNECT ------------------------- */
+/* header (cfr Header Page Compte.html */
+/* Main de cconnecter1 */
+.main-connecter1{
+  background-color: #000;
+  align-items: center;
+  gap: 100px;
+  padding-top: 10em;
+}
+/* connexion par un compte déjà créer */
+.conteneur-compteCréer{
+  gap: 50px;
+  width: 40%;
+}
+.conteneur-compteCréer h1{
+  color: #fff;
+  font-size: 60px;
+}
+.conteneurConnexion{
+  gap: 15px;
+}
+.switch{
+color: blue;
+cursor: pointer;
+font-size: 20px;
+}
+/* Choix de compte pour se connecter  */
+.connecterCompte{
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: 7px solid transparent;
+  border-radius: 20px;
+  width: 100%;
+  height: 50px;
+}
+.OU-ligne{
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.OU-ligne hr{
+  flex: 1;
+  border: none;
+  border-top: 2px solid #aeadad;
+}
+
+.connecterCompte a{
+  text-decoration: none;
+}
+/* Se connecter en insérant les informations */
+.monDePasseOublié{
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: 2px solid rgb(174, 211, 248);
+}
+.btn-next{
+  font-weight: bolder;
+}
+.pasDeCompte{
+  width: 40%;
+  height: 100px;
+  text-align: center;
+  font-size: 20px;
+  color:#aeadad;
+}
+/* -------------------- PAGE TWO_CONNECT ---------------------*/
+/* header(cfr Header Page compte.html) */
+/* Main de connecter2 */
+.main-connecter2{
+  align-items: center;
+  padding-top: 15em;
+  height: 100%;
+  background-color: #000;
+}
+.conteneurSectionConnecter2{
+  gap: 5px;
+  width: 70%;
+}
+.MotDePasse{
+  gap: 60px;
+}
+.MotDePasse h1{
+  font-size: 65px;
+  color: #fff;
+}
+.saisieMotDePasse input{
+  border-radius: 5px;
+  border: 2px solid #aeadad;
+  padding: 1em;
+  font-size: 19px;
+  background-color: #000;
+  height: 100px;
+  color: #fff;
+}
+.saisieMotDePasse a{
+  text-decoration: none;
+  font-size: 20px;
+  padding-left: 1em;
+}
+.validéConnexion{
+  gap: 30px;
+}
+.compteNonExistant{
+  text-align: start;
+}
+.connecterCompte2{
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: 7px solid transparent;
+  border-radius: 35px;
+  width: 100%;
+  height: 70px;
+  font-size: 25px;
+}
+
+
+/* ------------------------------------------------------- */
+/* -------------------RESPONSIVE MEDIA----------------- */
+/* ------------------------------------------------------ */
+
+/* petit écran */
+@media screen and (max-width:767px){
+  /* --------------PARTIE MAIN ------------------------ */
+  .index_main{
+      flex-direction: column;
+      height: auto;
+      padding-left: 0em;
+      padding-right: 0em;
+  }
+  /* Insertion icone X partie gauche  */
+  .conteneur-img-icone{
+      width: 100%;
+      justify-content: start;
+  }
+  .iconeX{
+      height: 60px;
+      width: 60px;
+  }
+  .contenair_index_main{
+      width: 80%;
+      gap: 35px;
+  }
+  /* conteneur contenant le titre comment ça marche */
+  .contenair_index_main_div1{
+      font-size: 50px;
+      text-align: start;
+  }
+  .big-C{
+      font-size: 79px;
+      display: inline-block;
+
+  }
+  /* PARTIE FOOTER POUR INDEX*/
+  .footer_index{
+      height: auto;
+      margin-top: 10px;
+  }
+
+  /* --------------------------PAGE COMPTE --------------------*/
+  /* header */
+  .icone-quitter{
+      height: 20px;
+      width: 20px;
+  }
+  .iconX-header{
+      height: 60px;
+      width: 60px;
+  }
+  /* Partie main compte */
+  .main-compte{
+      height: auto;
+      padding-top: 5em;
+  }
+  .formulaire-compte{
+      width: auto;
+      padding: 2em;
+  }
+  /* insertion des données */
+  .conteneur-données h1{
+      font-size: 43px;
+  }
+  /* second formulaire */
+  #Mois{
+      height: auto;
+  }
+  /* FOOTER COMPTE */
+  .conteneur-footer{
+      height: auto;
+      width: 100%;
+      padding: 1.5em;
+  }
+  /* ------------------ PAGE ONE_CONNECT------------------------- */
+  /* header (cfr Header Page Compte.html */
+  /* Main de cconnecter1 */
+  .main-connecter1{
+      height: 100vh;
+  }
+  /* connexion par un compte déjà créer */
+  .conteneur-compteCréer{
+      width: 80%;
+  }
+  .conteneur-compteCréer h1{
+      font-size: 40px;
+  }
+
+  /* Choix de compte pour se connecter  */
+  /* Se connecter en insérant les informations */
+  .pasDeCompte{
+      width: 80%;
+  }
+  /* ----------------- PAGE TWO_CONNECT -------------------*/
+  /* header(cfr Header Page compte.html) */
+  /* Main de connecter2 */
+  .compteNonExistant{
+      width: 100%;
+  }
+
+}
+/* Tablette */
+@media screen  and (min-width:768px ) and (max-width:1024px){
+  /* -----------------PAGE INDEX------------------------ */
+  .index_main{
+      justify-content: center;
+      height: 100vh;
+  }
+  .iconeX{
+      height: 550px;
+      width: 450px;
+  }
+  /* partie droite connexion */
+  .contenair_index_main{
+      width: auto;
+  }
+  /* -------------------------PAGE COMPTE ----------------- */
+  /* header  */
+  /* Partie main compte */
+  .main-compte{
+      height: 100vh;
+      padding-top: 15em;
+  }
+  /* ------------------PAGE ONE_CONNECT ------------------------- */
+  /* header (cfr Header Page Compte.html */
+  /* Main de cconnecter1 */
+  .main-connecter1{
+      height: 100vh;
+  }
+  /* connexion par un compte déjà créer */
+  .conteneur-compteCréer h1{
+      font-size: 35px;
+  }
+
+
+}
