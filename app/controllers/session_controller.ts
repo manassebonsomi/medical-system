@@ -4,6 +4,29 @@ import vine from '@vinejs/vine'
 import hash from '@adonisjs/core/services/hash'
 import { DateTime } from 'luxon'
 
+type ValidationErrorItem = {
+  field: string
+  message: string
+}
+
+function normalizeErrors(error: unknown): ValidationErrorItem[] {
+  const maybeMessages = (error as { messages?: unknown })?.messages
+  if (Array.isArray(maybeMessages)) {
+    return maybeMessages as ValidationErrorItem[]
+  }
+  const nested = (maybeMessages as { errors?: unknown })?.errors
+  if (Array.isArray(nested)) {
+    return nested as ValidationErrorItem[]
+  }
+  return []
+}
+
+function mapErrors(errors: ValidationErrorItem[]) {
+  return errors.reduce<Record<string, string>>((acc, item) => {
+    acc[item.field] = item.message
+    return acc
+  }, {})
+}
 
 export default class SessionController {
 
@@ -11,43 +34,69 @@ export default class SessionController {
     return view.render('pages/auth/login/login')
   }
 
-  async processStep1({ request, session, response }: HttpContext) {
+  async login({ request, session, response, view, auth }: HttpContext) {
     // Validateur simple pour s'assurer que le champ n'est pas vide
-    const step1Schema = vine.compile(
+    const schema = vine.compile(
       vine.object({
-        email: vine.string().trim().email().normalizeEmail()
+        email: vine.string().trim().email().normalizeEmail(),
+        password: vine.string().minLength(8)
       })
     )
 
-     let payload: { email: string; }
+     let payload: { email: string; password: string }
 
      try {
-      payload = await request.validateUsing(step1Schema)
+      payload = await request.validateUsing(schema)
     } catch (error) {
-      session.flash('error.email', 'Veuillez entrer un email correct.')
+      const errors = normalizeErrors(error)
+      return response.status(422).send(
+        await view.render('pages/auth/login/login', {
+          errors,
+          errorMap: mapErrors(errors),
+          values: request.only(['email', 'password']),
+        })
+      )
+     }
+
+     /* const user = await User.verifyCredentials(payload.email, payload.password)
+
+     if (!user) {
+      session.flash('erreur', "Désolé, Informations erronées.")
       return response.redirect().back()
     }
+      */
 
-    // Vérification de l'existence du compte par email
-    const utilisateur = await User.query()
-      .where('email', payload.email)
-      .first()
+    try {
+      const user = await User.verifyCredentials(payload.email, payload.password)
+      
+      if (!user) {
+        const message = 'Email ou mot de passe faux'
+        return response.status(422).send(
+          await view.render('pages/auth/login/login', {
+            errors: [{ field: 'email', message }],
+            errorMap: { email: message, password: message },
+            values: request.only(['email']),
+          })
+        )
+      }
+  
+      await auth.use('web').login(user)
+      return response.redirect('/home')
+  
+      } 
+      catch (error) {
+        const message = 'Email ou mot de passe incorrect'
+        return response.status(422).send(
+          await view.render('pages/auth/login/login', {
+            errors: [{ field: 'email', message }],
+            errorMap: { email: message, password: message },
+            values: request.only(['email']),
+          })
+        )
+      }  
 
-    // Si aucun compte ne correspond
-    if (!utilisateur) {
-      session.flash('errors.identifiant', "Désolé, nous n'avons pas pu trouver votre compte.")
-      return response.redirect().back()
-    }
-
-    // Vérification de l'état du compte
-    if (!utilisateur.is_verified) {
-      session.flash('errors.identifiant', "Votre compte n'est pas encore vérifié. Veuillez finaliser votre inscription grâce au code envoyé par email.")
-      return response.redirect().back()
-    }
-
-    // Si le compte existe et verifié, on garde l'identifiant en session et on passe à l'étape 2
-    session.put('login_identifiant', payload.email)
-    return response.redirect('/login/s2')
+     
+    
   }
 
   async showStep2({ view, session, response }: HttpContext) {

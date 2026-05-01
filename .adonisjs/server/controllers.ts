@@ -6,10 +6,9 @@
 export const controllers = {
   ForgotPasswords: () => import('#controllers/forgot_passwords_controller'),
   GoogleAuths: () => import('#controllers/google_auths_controller'),
-  Groks: () => import('#controllers/groks_controller'),
+  Home: () => import('#controllers/home_controller'),
   Messages: () => import('#controllers/messages_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   Profile: () => import('#controllers/profile_controller'),
-  Searches: () => import('#controllers/searches_controller'),
   Session: () => import('#controllers/session_controller'),
 }

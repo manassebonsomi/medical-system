@@ -71,6 +71,7 @@
     "@poppinss/ts-exec": "^1.4.4",
     "@vinejs/vine": "^4.3.0",
     "adonisjs-scheduler": "^2.7.0",
+    "axios": "^1.15.2",
     "better-sqlite3": "^12.6.2",
     "edge.js": "^6.5.0",
     "lucid": "^0.0.1",

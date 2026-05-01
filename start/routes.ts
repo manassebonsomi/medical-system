@@ -5,16 +5,18 @@ import SearchesController from '#controllers/searches_controller'
 import GrokController from '#controllers/groks_controller'
 import GoogleAuthController from '#controllers/google_auths_controller'
 import MessagesController from '#controllers/messages_controller'
+import HomeController from '#controllers/home_controller'
+import PredictionsController from '#controllers/predictions_controller'
 
 router
   .group(() => {
     router.get('/', [controllers.Session, 'show'])
-    router.post('login/e1', [controllers.Session, 'processStep1'])
+    router.post('/login', [controllers.Session, 'login'])
     router.get('login/s3', [controllers.Session, 'showStep3'])
     router.post('login/e3', [controllers.Session, 'processStep3'])
 
-    router.get('signup', [controllers.NewAccount, 'showStep1'])
-    router.post('signup', [controllers.NewAccount, 'processStep1'])
+    router.get('signup', [controllers.NewAccount, 'show'])
+    router.post('signup', [controllers.NewAccount, 'register'])
 
 
     router.get('/google/redirect', [GoogleAuthController, 'redirect']).as('google.redirect')
@@ -32,15 +34,14 @@ router
 
 router
   .group(() => {
-    // router.get('accueil', [controllers.NewAccount, 'accueil'])
-
+    router.get('/home', [HomeController, 'accueil'])
+    router.get('/prediction', [HomeController, 'prediction'])
+    router.post('/predict', [PredictionsController, 'predict'])
+    
     router.get('/profile/edit', [controllers.Profile, 'edit']).as('profile.edit')
     router.get('/profile/:id?', [controllers.Profile, 'show']).as('profile.show')
     router.put('/profile/edit', [controllers.Profile, 'update']).as('profile.update')
     router.post('/profile/privacy', [controllers.Profile, 'togglePrivacy']).as('profile.togglePrivacy')
-
-    router.get('/find', [SearchesController, 'show']).as('search.show')
-    router.get('/search', [SearchesController, 'index']).as('search.index')
 
     router.get('/messages', [MessagesController, 'index']).as('messages.index')
     router.get('/messages/:id', [MessagesController, 'show']).as('messages.show')
@@ -48,9 +49,3 @@ router
 
     router.post('logout', [controllers.Session, 'logout'])
   }).use(middleware.auth())
-
-router.group(() => {
-  router.post('/grok/generate', [GrokController, 'generate'])
-  router.post('/grok/hashtags', [GrokController, 'hashtags'])
-  router.get('/grok/analyze', [GrokController, 'analyze'])
-}).prefix('ai').use(middleware.auth())

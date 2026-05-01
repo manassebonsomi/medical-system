@@ -29,14 +29,20 @@ function mapErrors(errors: ValidationErrorItem[]) {
 
 export default class NewAccountController {
 
-  async showStep1({ view }: HttpContext) {
-    return view.render('pages/auth/signup/signup_step_1')
+  async show({ view }: HttpContext) {
+    return view.render('pages/auth/signup/signup')
   }
 
-  async processStep1({ request, session, response, view }: HttpContext) {
-    const step1Schema = vine.compile(
+
+  async register({ request, session, response, view, auth }: HttpContext) {
+    const schema = vine.compile(
       vine.object({
         fullname: vine.string().trim().minLength(3).maxLength(100),
+        pseudo: vine.string().trim().minLength(3).maxLength(50).unique({
+          table: 'users',
+          column: 'pseudo'
+        }),
+        password: vine.string().minLength(8),
         email: vine.string().email().normalizeEmail().unique({
           table: 'users',
           column: 'email',
@@ -47,16 +53,16 @@ export default class NewAccountController {
       })
     )
 
-    let payload: { fullname: string; email: string; }
+    let payload: { fullname: string; email: string; pseudo: string; password: string; }
     try {
-      payload = await request.validateUsing(step1Schema)
+      payload = await request.validateUsing(schema)
     } catch (error) {
       const errors = normalizeErrors(error)
       return response.status(422).send(
-        await view.render('pages/auth/signup/signup_step_1', {
+        await view.render('pages/auth/signup/signup', {
           errors,
           errorMap: mapErrors(errors),
-          values: request.only(['fullname', 'email']),
+          values: request.only(['fullname', 'email', 'password', 'pseudo']),
         })
       )
      }
@@ -70,12 +76,15 @@ export default class NewAccountController {
         name: payload.fullname,
         token_verification: otpCode,
         tokenVerificationExpiresAt: DateTime.now().plus({ minutes: 30 }),
+        pseudo: payload.pseudo,
+        password: payload.password,
+        is_verified: true
       }
     )
 
-    // Stockage en session
-    session.put('register_email', utilisateur.email)
-    return response.redirect('/signup/s3')
+    await auth.use('web').login(utilisateur)
+    return response.redirect('/home')
+
   }
 
   async showStep2({ view, session, response }: HttpContext) {
