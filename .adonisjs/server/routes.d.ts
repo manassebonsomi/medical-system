@@ -20,6 +20,7 @@ export type ScannedRoutes = {
     'forgot_passwords.process_step_3': { paramsTuple?: []; params?: {} }
     'home.accueil': { paramsTuple?: []; params?: {} }
     'home.prediction': { paramsTuple?: []; params?: {} }
+    'predictions.predict': { paramsTuple?: []; params?: {} }
     'profile.edit': { paramsTuple?: []; params?: {} }
     'profile.show': { paramsTuple?: [ParamValue?]; params?: {'id'?: ParamValue} }
     'profile.update': { paramsTuple?: []; params?: {} }
@@ -68,6 +69,7 @@ export type ScannedRoutes = {
     'forgot_passwords.process_step_1': { paramsTuple?: []; params?: {} }
     'forgot_passwords.process_step_2': { paramsTuple?: []; params?: {} }
     'forgot_passwords.process_step_3': { paramsTuple?: []; params?: {} }
+    'predictions.predict': { paramsTuple?: []; params?: {} }
     'profile.togglePrivacy': { paramsTuple?: []; params?: {} }
     'messages.store': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'session.logout': { paramsTuple?: []; params?: {} }

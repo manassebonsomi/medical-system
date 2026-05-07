@@ -1,49 +1,61 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 import axios from 'axios'
 import FormData from 'form-data'
 import fs from 'fs'
 
-
 export default class PredictionsController {
-
-  async predict({ request, response }: HttpContext) {
-
-    // const image = request.file('image')
-
+  async predict({ request, response, view }: HttpContext) {
+    // Récupération et validation de l'image
     const image = request.file('image', {
-        size: '5mb',
-        extnames: ['jpg', 'png', 'jpeg']
-      })
+      size: '10mb',
+      extnames: ['jpg', 'png', 'jpeg'],
+    })
 
-    if (!image) {
-      return response.badRequest({ message: "Image requise" })
+    if (!image || !image.isValid) {
+      return response.badRequest({ message: "Image invalide ou manquante" })
     }
 
-    await image.move('uploads')
+    // Définir le chemin de destination (dans public/uploads pour qu'elle soit accessible)
+    const uploadPath = app.makePath('public/uploads')
+    
+    // Déplacer le fichier
+    await image.move(uploadPath, {
+      name: `${Date.now()}.${image.extname}`, // Nom unique pour éviter les conflits
+      overwrite: true,
+    })
 
-    const formData = new FormData()
-    formData.append(
-      'file',
-      fs.createReadStream(`uploads/${image.fileName}`)
-    )
+    const filePath = `${uploadPath}/${image.fileName}`
 
-    const apiResponse = await axios.post(
-      'http://localhost:8000/predict',
-      formData,
-      {
-        headers: formData.getHeaders()
-      }
-    )
+    try {
+      // Préparation de l'envoi vers l'API Flask
+      const formData = new FormData()
+      // Note : 'file' doit correspondre à request.files['file'] côté Python
+      formData.append('file', fs.createReadStream(filePath))
 
-    console.log(apiResponse.data)
-    console.log(apiResponse)
+      const apiResponse = await axios.post(
+        'http://localhost:5000/api/predict',
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+          },
+        }
+      )
 
-    // return response.ok(apiResponse.data)
+      // Extraction des données de prédiction
+      const result = apiResponse.data.prediction
 
-    return response.status(200).send(
-      await view.render('pages/prediction', {
-        apiResponse.data
+      // Rendu de la vue avec les données propres
+      return view.render('pages/prediction', {
+        label: result.label,
+        accuracy: result.accuracy,
+        imageUrl: `/uploads/${image.fileName}`, // Chemin pour la balise <img>
       })
-    )
+
+    } catch (error) {
+      console.error("Erreur API Python:", error.message)
+      return response.internalServerError("L'API d'analyse médicale est indisponible.")
+    }
   }
 }

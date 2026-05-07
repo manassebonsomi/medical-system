@@ -349,17 +349,18 @@
 
                             </form>
 
+                             @if(label)
                             <!-- RESULTAT -->
                             <hr>
-
                             <div class="text-center">
                                 <h5>Résultat de la prédiction</h5>
 
                                 <div class="alert alert-info">
-                                    <p><strong>Diagnostic :</strong> {{ prediction }}</p>
+                                    <p><strong>Diagnostic :</strong> {{ label }}</p>
                                     <p><strong>Confiance :</strong> {{ accuracy }} %</p>
                                 </div>
                             </div>
+                            @endif
 
                         </div>
                     </div>

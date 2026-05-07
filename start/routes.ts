@@ -1,8 +1,6 @@
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
-import SearchesController from '#controllers/searches_controller'
-import GrokController from '#controllers/groks_controller'
 import GoogleAuthController from '#controllers/google_auths_controller'
 import MessagesController from '#controllers/messages_controller'
 import HomeController from '#controllers/home_controller'
