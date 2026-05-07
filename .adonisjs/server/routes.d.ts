@@ -21,6 +21,7 @@ export type ScannedRoutes = {
     'home.accueil': { paramsTuple?: []; params?: {} }
     'home.prediction': { paramsTuple?: []; params?: {} }
     'predictions.predict': { paramsTuple?: []; params?: {} }
+    'predictions.index': { paramsTuple?: []; params?: {} }
     'profile.edit': { paramsTuple?: []; params?: {} }
     'profile.show': { paramsTuple?: [ParamValue?]; params?: {'id'?: ParamValue} }
     'profile.update': { paramsTuple?: []; params?: {} }
@@ -41,6 +42,7 @@ export type ScannedRoutes = {
     'password.reset.step3': { paramsTuple?: []; params?: {} }
     'home.accueil': { paramsTuple?: []; params?: {} }
     'home.prediction': { paramsTuple?: []; params?: {} }
+    'predictions.index': { paramsTuple?: []; params?: {} }
     'profile.edit': { paramsTuple?: []; params?: {} }
     'profile.show': { paramsTuple?: [ParamValue?]; params?: {'id'?: ParamValue} }
     'messages.index': { paramsTuple?: []; params?: {} }
@@ -57,6 +59,7 @@ export type ScannedRoutes = {
     'password.reset.step3': { paramsTuple?: []; params?: {} }
     'home.accueil': { paramsTuple?: []; params?: {} }
     'home.prediction': { paramsTuple?: []; params?: {} }
+    'predictions.index': { paramsTuple?: []; params?: {} }
     'profile.edit': { paramsTuple?: []; params?: {} }
     'profile.show': { paramsTuple?: [ParamValue?]; params?: {'id'?: ParamValue} }
     'messages.index': { paramsTuple?: []; params?: {} }

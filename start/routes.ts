@@ -35,6 +35,7 @@ router
     router.get('/home', [HomeController, 'accueil'])
     router.get('/prediction', [HomeController, 'prediction'])
     router.post('/predict', [PredictionsController, 'predict'])
+    router.get('/results', [PredictionsController, 'index'])
     
     router.get('/profile/edit', [controllers.Profile, 'edit']).as('profile.edit')
     router.get('/profile/:id?', [controllers.Profile, 'show']).as('profile.show')

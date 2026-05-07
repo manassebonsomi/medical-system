@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
-    <title>Projet hopital Prediction</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Résultats des patients</title>
 
-    <!--[if lt IE 9]>
-        <script src="/js/html5shiv.min.js"></script>
-        <script src="/js/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-    <div class="main-wrapper">
+  <div class="main-wrapper">
         <div class="header">
 			<div class="header-left">
 				<a href="index-2.html" class="logo">
@@ -150,7 +142,7 @@
                             <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Horaire des médecins</span></a>
                         </li>
                          <li>
-                            <a href="/prediction"><i class="fa fa-stethoscope"></i> <span>Prédiction Médicale</span></a>
+                            <a href="prediction.html"><i class="fa fa-stethoscope"></i> <span>Prédiction Médicale</span></a>
                         </li>
                         <li>
                             <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Départements</span></a>
@@ -295,86 +287,70 @@
                 </div>
             </div>
     </div>
-<!-- MAIN WRAPPER -->
-<div class="main-wrapper">
+    <div class="page-content">
+    <div class="content-wrapper">
+    <br><br>
+    <div class="card">
+        <div class="card-body">
 
-    <!-- PAGE CONTENT -->
-    <div class="page-wrapper">
-
-        <div class="content container-fluid">
-            <!-- FORMULAIRE -->
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <form action="/predict" method="POST" enctype="multipart/form-data">
-                                {{ csrfField() }}
-                                <div class="page-header">
-                        <div class="row">
-                            <div class="col-sm-12">
-                            <h3 class="text-center mb-4">Prédiction des images thoraciques</h3> 
-                        </div>
-                        </div>
-                            </div>
-
-
-                                <!-- IMAGE UPLOAD -->
-                            <div class="form-group">
-                                <label class="control-label">Importer une radiographie du thorax</label><div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" required><label class="custom-file-label" for="image">Choisir une image thoracique</label>
-                                </div>
-                            </div>
-
-                                <!-- TYPE MODELE -->
-                                <div class="form-group">
-                                    <label>Modèle IA</label>
-                                    <select class="form-control" name="model">
-                                        <option value="xception">Xception CNN</option>
-                                        <option value="cnn">CNN Standard</option>
-                                        <option value="transfer">Transfer Learning</option>
-                                    </select>
-                                </div>
-
-                                <!-- BOUTON -->
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary">
-                                        Lancer la prédiction
-                                    </button>
-                                </div>
-                                <div class="form-group text-center">
-                                 <a href="/results" class="btn btn-success">Voir les résultats des patients</a>
-                                </div>
-
-                            </form>
-
-                             @if(prediction)
-                            <!-- RESULTAT -->
-                            <hr>
-                            <div class="text-center">
-                                <h5>Résultat de la prédiction</h5>
-
-                                <div class="alert alert-info">
-                                    <p><strong>Diagnostic :</strong> {{ prediction.label }}</p>
-                                    <p><strong>Confiance :</strong> {{ prediction.accuracy }} %</p>
-                                </div>
-                            </div>
-                            @endif
-
-                        </div>
-                    </div>
-
-                </div>
+            <!-- 🔍 BARRE DE RECHERCHE -->
+            <div class="form-group">
+                 <h3 class="text-center mb-4">Résultats des prédictions médicales</h3>
+                <input type="text" id="searchInput" class="form-control" 
+                       placeholder="🔍 Rechercher un patient ou une maladie...">
             </div>
+
+            <!-- 📊 TABLEAU -->
+            <table class="table table-bordered table-striped" id="patientTable">
+                <thead class="thead-medical">
+                    <tr>
+                        <th>Patient</th>
+                        <th>Image</th>
+                        <th>Maladie détectée</th>
+                        <th>Confiance (%)</th>
+                        <th>Modèle Utilisé</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @each(item in predictions)
+                    <tr>
+                        {{--  <td>@{item.patient}</td>  --}}
+                        <td>@ BMM </td>
+                        <td><img src="/uploads/{{ item.filename }}" class="thumbnail" alt="Radio" width="60"></td>
+                        <td>
+                            <span class="badge {{ item.label === 'Normal' ? 'badge-success' : 'badge-danger' }}">
+                                {{ item.label }}
+                            </span>
+                        </td>
+                        <td>{{ item.accuracy }}%</td>
+                        <td>{{ item.modelUsed }}</td>
+                        <td>{{ item.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</td>
+                    </tr>
+                    @endeach
+
+                    {{--  <tr>
+                        <td>Patient 2</td>
+                        <td><img src="assets/img/sample.jpg" width="60"></td>
+                        <td><span class="badge badge-success">Normal</span></td>
+                        <td>87%</td>
+                        <td>2026-04-17</td>
+                    </tr>  --}}
+
+                </tbody>
+            </table>
 
         </div>
     </div>
 
+    <!-- 🔙 RETOUR -->
+    <div class="text-center mt-3">
+        <a href="/prediction" class="btn btn-primary">Retour</a>
+    </div>
+ </div>
 </div>
-<!-- SCRIPTS -->
 <div class="sidebar-overlay" data-reff=""></div>
-    
     <script src="/js/jquery-3.2.1.min.js"></script>
 	<script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -382,17 +358,5 @@
     <script src="/js/Chart.bundle.js"></script>
     <script src="/js/chart.js"></script>
     <script src="/js/app.js"></script>
-
-    <script>
-    // Écouter le changement sur l'input fichier
-    document.getElementById('image').addEventListener('change', function(e){
-        // Récupérer le nom du fichier sélectionné
-        var fileName = e.target.files[0].name;
-        // Remplacer le texte du label par le nom du fichier
-        var nextSibling = e.target.nextElementSibling;
-        nextSibling.innerText = fileName;
-    });
-    </script>
-
 </body>
-</html>
+</html> 

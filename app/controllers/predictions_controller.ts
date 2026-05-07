@@ -3,17 +3,32 @@ import app from '@adonisjs/core/services/app'
 import axios from 'axios'
 import FormData from 'form-data'
 import fs from 'fs'
+import Prediction from '#models/prediction'
 
 export default class PredictionsController {
-  async predict({ request, response, view }: HttpContext) {
+
+  async index({ view }: HttpContext) {
+    // On récupère toutes les prédictions de la base de données
+    const predictions = await Prediction.query().orderBy('created_at', 'desc')
+
+    return view.render('pages/results-prediction', { predictions })
+  }
+
+  async predict({ request, response, view, auth }: HttpContext) {
     // Récupération et validation de l'image
     const image = request.file('image', {
       size: '10mb',
       extnames: ['jpg', 'png', 'jpeg'],
     })
 
+    const modelType = request.input('model')
+
     if (!image || !image.isValid) {
       return response.badRequest({ message: "Image invalide ou manquante" })
+    }
+
+    if (!modelType) {
+      return response.badRequest({ message: "Type de modèle invalide" })
     }
 
     // Définir le chemin de destination (dans public/uploads pour qu'elle soit accessible)
@@ -46,15 +61,26 @@ export default class PredictionsController {
       // Extraction des données de prédiction
       const result = apiResponse.data.prediction
 
-      // Rendu de la vue avec les données propres
-      return view.render('pages/prediction', {
+      // const user = auth.user!
+
+      const record = await Prediction.create({
+        filename: image.fileName,
         label: result.label,
         accuracy: result.accuracy,
+        modelUsed: modelType,
+        // userId: user.id
+      })
+
+      // Rendu de la vue avec les données propres
+      return view.render('pages/prediction', {
+        prediction: record, // On passe l'objet complet de la DB
+        // imageUrl: `/uploads/${fileName}`,
         imageUrl: `/uploads/${image.fileName}`, // Chemin pour la balise <img>
       })
 
     } catch (error) {
-      console.error("Erreur API Python:", error.message)
+      const message = error instanceof Error ? error.message : JSON.stringify(error)
+      console.error("Erreur API Python:", message)
       return response.internalServerError("L'API d'analyse médicale est indisponible.")
     }
   }

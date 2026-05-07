@@ -24,6 +24,38 @@ export class MessageSchema extends BaseModel {
   declare lu: boolean | null
 }
 
+export class PredictionSchema extends BaseModel {
+  static $columns = ['accuracy', 'createdAt', 'filename', 'id', 'label', 'modelUsed', 'updatedAt'] as const
+  $columns = PredictionSchema.$columns
+  @column()
+  declare accuracy: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare filename: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare label: string
+  @column()
+  declare modelUsed: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class RoleSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'name', 'updatedAt'] as const
+  $columns = RoleSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['address', 'avatarUrl', 'bio', 'createdAt', 'email', 'fullName', 'googleId', 'id', 'isPrivate', 'isVerified', 'password', 'phone', 'pseudo', 'tokenVerification', 'tokenVerificationExpiresAt', 'twoFactorCode', 'twoFactorExpiresAt', 'updatedAt'] as const
   $columns = UserSchema.$columns
